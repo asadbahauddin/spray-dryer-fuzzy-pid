@@ -1,0 +1,43 @@
+﻿MATLAB 24.1.0.2628055 (R2024a) Update 4
+Calibration: best cost 21.788, anchor RMS 2.075 degC
+  parameters at a bound: Tw_spray
+23 of 40 starts reached anchor RMS <= 3.11 degC
+FOPDT: K = 1.661 degC/%, tau = 1274.5 s, theta = 10.0 s
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+Calibrated: T_ss(100%, spray) = 121.2 C, T_ss(100%, dry) = 196.1 C
+Spray-scenario set-point: 90 C, steady duty 81.2 %
+Simulink vs analytic open-loop replay: max |dT| = 0.016 C
+Baseline PID: SIMC PI (tau_c = 5 theta)  Kp=11.6 Ki=0.044 Kd=0 N=10
+S1_120 done (281 s)
+S1_150 done (294 s)
+S2 done (312 s)
+S2_120 done (330 s)
+S3 done (348 s)
+S4 PID done (961 s)
+S4 Fuzzy done (1519 s)
+S4 Fuzzy-PID done (2386 s)
+PWM detail done (2489 s)
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+[Warning: Escaped character '\c' is not valid. See 'doc sprintf' for supported special characters.] 
+[> In make_figures (line 124)
+In run_all_scenarios (line 220)] 
+[Warning: Vectorized content might take a long time to create, or it might contain unexpected results. Set 'ContentType' to 'image' for
+better performance. <a href="matlab:warning('off', 'MATLAB:print:ContentTypeImageSuggested')">Click here</a> to not see this message
+again.] 
+ALL DONE in 42.3 min

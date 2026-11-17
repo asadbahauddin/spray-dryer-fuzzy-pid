@@ -1,0 +1,131 @@
+================================================================================
+WIRING PANEL v1.5 - SMART SALT PROCESSOR (SPRAY DRYER GARAM)
+Panel besi, tanpa contactor, E-stop memutus SEMUA daya
+Universitas Trunodjoyo Madura
+================================================================================
+
+--------------------------------------------------------------------------------
+1. KONSEP
+--------------------------------------------------------------------------------
+- E-stop memutus L dan N untuk SELURUH beban: heater, blower, DAN PSU 12 V
+  (otomatis memutus pompa + ESP32). Kategori stop 0.
+- Setelah E-stop dilepas / listrik kembali, ESP32 boot ulang ke mode IDLE.
+  Tidak ada aktuator yang jalan sampai START ditekan di layar (anti-restart via firmware).
+- MCB dan E-stop 2-pole karena steker lab tipe Schuko bisa terpasang terbalik
+  (L dan N tertukar).
+
+--------------------------------------------------------------------------------
+2. DIAGRAM JALUR 220 VAC
+--------------------------------------------------------------------------------
+Stopkontak lab (ber-ground)
+  |  kabel 3x2.5 mm2
+  +-- PE  ----------------------------------> EARTH BAR (lihat bagian 4)
+  +-- L   --> [RCCB 2P 25A 30mA] --> [MCB 2P 16A pole 1] --> [E-STOP NC1] --> BUS_L
+  +-- N   --> [RCCB 2P 25A 30mA] --> [MCB 2P 16A pole 2] --> [E-STOP NC2] --> BUS_N
+  RCCB: tekan tombol TEST setiap awal sesi praktikum/pengujian -> harus trip.
+  !! N TIDAK BOLEH disambung ke PE/body di mana pun di dalam panel (RCCB akan trip,
+     dan jika steker terbalik, body jadi bertegangan).
+
+BUS_L / BUS_N = terminal block distribusi (2.5 mm2)
+
+(a) HEATER (2.5 mm2)
+  BUS_L --> SSR1 terminal 1 (L) ; SSR1 terminal 2 (T) --> HEATER bank (4 elemen paralel) --> BUS_N
+  (Thermostat/thermal cutoff TIDAK dipakai - keputusan desain, lihat bagian 6.)
+  Lampu HEATER (220 V): paralel dengan heater (SSR1 terminal 2 --> lampu --> BUS_N)
+         -> berkedip mengikuti duty time-proportioning.
+
+(b) BLOWER (1.5 mm2)
+  BUS_L --> SSR2 terminal 1 (L) ; SSR2 terminal 2 (T) --> BLOWER (L) ; BLOWER (N) --> BUS_N
+  MOV 14D431K paralel di terminal blower (L-N).
+  Jika blower punya kapasitor run: biarkan sesuai wiring pabrik di sisi motor.
+
+(c) PSU 12 V (0.75 mm2)
+  BUS_L --> [Fuse DIN 4A] --> PSU L
+  BUS_N ------------------> PSU N
+  PE    ------------------> PSU FG (terminal ground)
+
+(d) Lampu POWER (220 V): BUS_L --> lampu --> BUS_N
+
+--------------------------------------------------------------------------------
+3. JALUR 12 VDC
+--------------------------------------------------------------------------------
+PSU V+ --(2.5 mm2, pendek)--> PCB J1.1
+PSU V- --(2.5 mm2, pendek)--> PCB J1.2
+PSU V+ / V- --> kipas ventilasi panel 12 V (0.5 mm2) [langsung dari PSU, bukan dari PCB]
+
+PCB J10.1 (SSRH_POS) --> SSR1 input "+" (terminal 3)     0.75 mm2
+PCB J10.2 (SSRH_NEG) --> SSR1 input "-" (terminal 4)
+PCB J11.1 (SSRB_POS) --> SSR2 input "+"
+PCB J11.2 (SSRB_NEG) --> SSR2 input "-"
+
+PCB J2.1 (+12V_PUMP) --(1.5 mm2, lewat gland)--> POMPA (+)    [pompa di samping panel]
+PCB J2.2 (PUMP_NEG)  --(1.5 mm2, lewat gland)--> POMPA (-)
+  -> solder kapasitor 100 nF langsung di terminal motor pompa.
+  -> kabel + dan - dipilin (twisted) untuk mengurangi radiasi EMI.
+
+DS18B20 x3 (kering, basah, outlet) --> gland sensor --> PCB J14 / J15 / J16.
+  Bola basah: ujung probe dibungkus sumbu katun 100%, sumbu dicelup wadah aquades.
+
+Thermocouple: probe --> gland KHUSUS TC --> langsung ke terminal modul MAX31856 (polaritas!)
+  K-type: kawat kuning/hijau = (+), merah/putih = (-) (warna tergantung standar, cek label probe)
+  Shield/braid --> PCB J7 (GND). Ujung shield di sisi probe TIDAK disambung.
+
+LCD (pintu panel) --> kabel 14 pin 15 cm --> PCB J8.
+  Jauhkan dari kabel 220 V. Jika pintu panel diengsel, beri slack & klem kabel.
+
+--------------------------------------------------------------------------------
+4. GROUNDING / PE (WAJIB)
+--------------------------------------------------------------------------------
+PE = kabel HIJAU-KUNING dari pin ground stopkontak. BUKAN fasa (L), BUKAN netral (N).
+!! Body/pintu panel TIDAK BOLEH disambung ke N: N dialiri arus beban; jika N putus atau
+   steker terbalik (Schuko), seluruh panel bertegangan 220 V. RCCB juga akan trip.
+!! GND DC (PSU V- / GND PCB) juga BUKAN PE; keduanya hanya bertemu di satu titik (H1 PCB).
+
+Cek stopkontak lab sebelum dipakai (multimeter AC):
+  L-PE ~220 V | N-PE ~0 V (beberapa volt wajar) | L-N ~220 V
+  Jika L-PE ~0 V -> ground stopkontak putus, JANGAN dipakai, lapor teknisi.
+
+EARTH BAR terhubung ke:
+  - PE kabel power masuk
+  - Body panel (baut ke plat dasar, kerok cat di titik baut)
+  - Pintu panel (kabel braid/hijau-kuning; engsel BUKAN penghantar yang andal)
+  - PSU FG
+  - Rangka / menara spray dryer stainless + housing heater + body blower
+  - Body pompa (jika logam)
+PCB: satu lubang mounting dekat J1 (sudah tersambung GND di PCB) --> standoff logam --> plat panel.
+     Lubang mounting lain: standoff NILON.
+
+--------------------------------------------------------------------------------
+5. TATA LETAK DI DALAM PANEL
+--------------------------------------------------------------------------------
+  +---------------------------------------------------+
+  | [MCB][TB L/N][Fuse PSU]  |  [PSU 12V 20A]          |  <- ZONA AC (atas)
+  | [SSR1+heatsink][SSR2]    |                         |
+  |----------------------- ducting --------------------|
+  | [PCB kontrol]            |  gland TC (terpisah)    |  <- ZONA DC (bawah)
+  | antena ESP32 menghadap   |  gland pompa            |
+  | sisi yang jauh dari PSU  |                         |
+  +---------------------------------------------------+
+  Pintu: E-stop, lampu POWER/HEATER, LCD 2.8"
+  - Heatsink SSR1 vertikal (sirip tegak) dekat lubang ventilasi; kipas 12 V menghembus
+    keluar di atas, grill masuk di bawah.
+  - Kabel 220 V dan kabel sinyal (TC, LCD, SSR input) di ducting/jalur BERBEDA,
+    jika harus menyilang, silangkan tegak lurus.
+
+--------------------------------------------------------------------------------
+6. CATATAN KESELAMATAN (BACA)
+--------------------------------------------------------------------------------
+!! KEPUTUSAN DESAIN: thermostat/thermal cutoff hardware TIDAK dipasang.
+   Mode gagal SSR adalah SHORT (tetap ON). Jika SSR1 short:
+   - ESP32 TIDAK bisa mematikan heater.
+   - Satu-satunya pemutus adalah E-STOP (manual, butuh orang di tempat).
+   Mitigasi yang dipakai:
+   - Thermocouple di seberang inlet (jalur udara panas) -> overheat terbaca.
+   - Firmware: batas suhu maksimum + deteksi "heater OFF tapi suhu terus naik"
+     -> alarm "TEKAN E-STOP" di layar.
+   - PROSEDUR WAJIB: alat TIDAK BOLEH ditinggal tanpa operator selama heater menyala.
+   Jika kelak ditambah thermal cutoff 16 A, pasang seri di jalur BUS_L -> SSR1 (tanpa ubah PCB).
+!! Jangan menyalakan heater tanpa blower berjalan (elemen bisa putus dalam hitungan detik-menit).
+!! Uji pertama: heater dilepas dulu, uji SSR dengan lampu pijar/beban kecil.
+!! Pastikan panel tertutup & ter-ground sebelum menyalakan 220 V.
+================================================================================

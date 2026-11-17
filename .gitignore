@@ -1,0 +1,16 @@
+# ---- private / unpublished documents (not for the public repository) ----
+LaporanAkhir_Riset_*.docx
+PT-Latif.pdf
+English_FormCopyRight-JoTI*.docx
+FormCopyRight-Joti*.docx
+Template JoTI*.docx
+Template_Laporan_Akhir*.docx
+sim_fuzzy_pid/paper/
+sim_fuzzy_pid/paper_support_notes.md
+
+# ---- Office / MATLAB temporary and cache files ----
+~$*
+*.asv
+slprj/
+*.slxc
+sim_fuzzy_pid/results/all_runs.mat

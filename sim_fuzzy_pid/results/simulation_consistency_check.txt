@@ -1,0 +1,1 @@
+Simulated open-loop replay (heater 100 %, spray at 90 C) - Simulink model (ode4, 0.1 s, SSR quantisation, 10 s delay) vs exact linear solution used for calibration: max |dT_meas| = 0.016 C

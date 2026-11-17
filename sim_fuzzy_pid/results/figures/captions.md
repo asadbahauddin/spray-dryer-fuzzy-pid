@@ -1,0 +1,15 @@
+- **fig01_model_top**: Top level of the Simulink Simulation model (setpoint, controller, firmware safety limiter, SSR actuator, two-node heater/chamber plant, spray disturbance, RTD sensor, logging).
+- **fig02_model_controller**: Controller subsystem of the Simulation model: discrete PID, incremental fuzzy (firmware) and self-tuning Fuzzy-PID, selected by P.ctrl_mode.
+- **fig06_S1_startup**: Simulated start-up from ambient without spray (scenario S1): chamber air temperature for set-points of 120 \circC (a) and 150 \circC (b) and the corresponding heater duty (c, d).
+- **fig07_S2_spray**: Simulated spray-start disturbance at a set-point of 90 \circC (scenario S2): chamber air temperature (a, b) and heater duty (c, d); dotted lines in (b) mark the \pm2 \circC band.
+- **fig07b_S2_120**: Simulated spray-start disturbance at a set-point of 120 \circC, which equals the calibrated steady state at 100 % duty with spray: all controllers saturate.
+- **fig08_S3_setpoint**: Simulated set-point tracking 100 \rightarrow 120 \rightarrow 140 \circC without spray (scenario S3).
+- **fig09_S4_robustness**: Simulated Monte-Carlo robustness, 50 runs per controller (C \pm20 %, air flow \pm20 %, spray rate \pm30 %, extra delay 0-10 s): temperature envelopes (a-c) and distributions of overshoot, spray-induced deviation and IAE (d-f).
+- **fig10_S5_noise_lag**: Simulated effect of RTD measurement noise and sensor lag (scenario S5): heater duty around the spray start without (a) and with (b) noise and lag, total control-effort variation (c) and maximum spray-induced deviation (d).
+- **fig13_pwm_ripple**: Simulated comparison of the duty-average SSR model and the detailed 2 s time-proportioning model (PID, set-point steady state).
+- **fig14_fpid_gains**: Simulated evolution of the self-tuned PID gains relative to the baseline (scenario S2).
+- **fig12_metrics_bar**: Simulated performance metrics of the three controllers (scenarios S1 at 120 \circC and S2).
+- **fig03_calibration**: Simulated model response: model calibration against operator-observed temperature profile (approximate anchor points), heater at 100 % duty and spray started at 90 \circC (a); simulated step response of the calibrated model and its FOPDT approximation (b).
+- **fig11_S6_safety**: Simulated safety scenarios (S6): SSR short-circuit fault at 60 min, where the firmware cannot switch the heater off and only the SSR-stuck alarm and the E-stop remain (a); highest set-point accepted by the firmware, 180 \circC (b).
+- **fig04_fis_membership**: Membership functions of the incremental fuzzy controller (a-c) and of the self-tuning Fuzzy-PID supervisor (d-e) used in the Simulation (normalised universes; e: \pm20 \circC, \Deltae: \pm2 \circC per 2 s, \Deltau: \pm8 % per step).
+- **fig05_fis_surfaces**: Control surfaces of the fuzzy inference systems used in the Simulation: incremental fuzzy controller (a) and self-tuning gain supervisor (b-d).

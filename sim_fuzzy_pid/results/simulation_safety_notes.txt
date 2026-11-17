@@ -1,0 +1,2 @@
+Simulated dry steady state at 100 % duty: 196.1 C (sensor), spray steady state at 100 %: 121.2 C
+SSR-short fault at 60 min: max T_air = 196.0 C within 240 min; firmware SSR-stuck alarm (OFF >= 60 s, rise > 5 C, T > 60 C) at t = 61.8 min (1.8 min after the fault)
